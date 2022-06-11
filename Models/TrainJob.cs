@@ -20,7 +20,5 @@ namespace JobsTrainer.Models
 
         [StringLength(200)]
         public string Company { get; set; }
-
-        public string ExternalLink { get; set; }
     }
 }

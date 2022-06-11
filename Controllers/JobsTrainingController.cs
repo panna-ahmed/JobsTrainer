@@ -29,8 +29,13 @@ namespace JobsTrainer.Controllers
         {
             var _mappedJobs = _mapper.Map<IEnumerable<TrainJob>>(data);
 
-            _ctx.TrainJobs.AddRange(_mappedJobs);
-            _ctx.SaveChanges();
+            foreach (var j in _mappedJobs) {
+                if (!_ctx.TrainJobs.Any(t => t.JobId == j.JobId))
+                {
+                    _ctx.TrainJobs.Add(j);
+                    _ctx.SaveChanges();
+                }
+            }
 
             return Accepted();
         }
