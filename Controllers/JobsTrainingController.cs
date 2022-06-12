@@ -25,15 +25,17 @@ namespace JobsTrainer.Controllers
         }
 
         [HttpPost("train/create")]
-        public IActionResult Create(IEnumerable<TrainJobDto> data)
+        public async Task<IActionResult> Create(IEnumerable<TrainJobDto> data)
         {
             var _mappedJobs = _mapper.Map<IEnumerable<TrainJob>>(data);
 
             foreach (var j in _mappedJobs) {
                 if (!_ctx.TrainJobs.Any(t => t.JobId == j.JobId))
                 {
+                    j.CreatedAt = DateTime.Now;
+
                     _ctx.TrainJobs.Add(j);
-                    _ctx.SaveChanges();
+                    await _ctx.SaveChangesAsync();
                 }
             }
 
