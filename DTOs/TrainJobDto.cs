@@ -15,5 +15,7 @@ namespace JobsTrainer.DTOs
         public string Country { get; set; }
 
         public string Company { get; set; }
+
+        public bool IsEasy { get; set; }
     }
 }
