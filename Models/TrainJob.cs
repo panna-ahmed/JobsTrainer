@@ -9,7 +9,8 @@ namespace JobsTrainer.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public uint JobId { get; set; }
 
-        public string Link { get; set; }
+        [StringLength(300)]
+        public string Title { get; set; }
 
         public string Sample { get; set; }
 
@@ -22,5 +23,7 @@ namespace JobsTrainer.Models
         public string Company { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public bool IsEasy { get; set; }
     }
 }

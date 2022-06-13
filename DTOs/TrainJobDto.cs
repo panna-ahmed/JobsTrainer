@@ -4,7 +4,7 @@ namespace JobsTrainer.DTOs
 {
     public class TrainJobDto
     {
-        public string Link { get; set; }
+        public string Title { get; set; }
 
         public string Sample { get; set; }
 
