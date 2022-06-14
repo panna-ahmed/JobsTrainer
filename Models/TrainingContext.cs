@@ -9,5 +9,8 @@ namespace JobsTrainer.Models
         }
 
         public DbSet<TrainJob> TrainJobs { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
+
     }
 }

@@ -16,6 +16,8 @@ namespace JobsTrainer.DTOs
 
         public string Company { get; set; }
 
+        public string CompanyLink { get; set; }
+
         public bool IsEasy { get; set; }
     }
 }

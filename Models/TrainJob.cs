@@ -22,6 +22,9 @@ namespace JobsTrainer.Models
         [StringLength(200)]
         public string Company { get; set; }
 
+        [StringLength(200)]
+        public string CompanyLink { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public bool IsEasy { get; set; }

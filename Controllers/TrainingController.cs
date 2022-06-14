@@ -41,5 +41,32 @@ namespace JobsTrainer.Controllers
 
             return Accepted();
         }
+
+        [HttpPost("train/optimize")]
+        public IActionResult Optimize()
+        {
+            var jobCounts = _ctx.TrainJobs.GroupBy(t => t.Company)
+                .Select(j => new
+                {
+                    CompanyName = j.Key,
+                    JobCount = j.Count()
+                }).Where(j => j.JobCount > 10).ToList();
+
+            foreach (var jc in jobCounts)
+            {
+                var tj = _ctx.TrainJobs.Where(t => t.Company == jc.CompanyName);
+
+                var s = tj.First().Sentiment;
+                if (tj.Any(t => t.Sentiment != s))
+                    continue;
+
+                _ctx.Companies.Add(new Company { Name = jc.CompanyName, Link = tj.FirstOrDefault(t => t.CompanyLink != null)?.CompanyLink, IsFriendly = s });
+                
+                _ctx.TrainJobs.RemoveRange(tj);
+                _ctx.SaveChanges();
+            }
+
+            return Accepted();
+        }
     }
 }
