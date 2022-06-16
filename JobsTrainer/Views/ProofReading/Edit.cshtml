@@ -1,26 +1,48 @@
-﻿@model JobsTrainer.Models.TrainJob
+﻿@model JobsTrainer.DTOs.TrainJobDto
 
 @{
     ViewData["Title"] = "Edit";
+
 }
 
 <h1>Edit</h1>
 
-<h4>TrainJob</h4>
+<h4 style="display:inline-block">TrainJob</h4>
+<span>
+    @if (Model.PrevJobId.HasValue)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.PrevJobId">Prev</a>
+    }
+    else
+    {
+        <span>Prev</span>
+    }
+    &nbsp;
+    @if (Model.NextJobId.HasValue)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.NextJobId">Next</a>
+    }
+    else
+    {
+        <span>Next</span>
+    }
+</span>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="JobId" />
+            
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
+                <a target="_blank" href=@string.Format("https://www.linkedin.com/jobs/view/{0}", Model.JobId)>Link</a>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Sample" class="control-label"></label>
-                <input asp-for="Sample" class="form-control" />
+                <textarea asp-for="Sample" class="form-control" rows="5"></textarea>
                 <span asp-validation-for="Sample" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
@@ -40,7 +62,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CompanyLink" class="control-label"></label>
-                <input asp-for="CompanyLink" class="form-control" />
+                <input asp-for="CompanyLink" class="form-control" /> <a target="_blank" href=@string.Format("https://www.linkedin.com{0}", Model.CompanyLink)>Link</a>
                 <span asp-validation-for="CompanyLink" class="text-danger"></span>
             </div>
             <div class="form-group">

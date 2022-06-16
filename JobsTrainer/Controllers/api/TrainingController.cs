@@ -3,15 +3,11 @@ using JobsTrainer.DTOs;
 using JobsTrainer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace JobsTrainer.Controllers
+namespace JobsTrainer.Controllers.api
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class TrainingController : ControllerBase
     {
         private readonly ILogger<TrainingController> _logger;
@@ -28,17 +24,22 @@ namespace JobsTrainer.Controllers
         [HttpPost("train/create")]
         public async Task<IActionResult> Create(IEnumerable<TrainJobDto> data)
         {
-            var _mappedJobs = _mapper.Map<IEnumerable<TrainJob>>(data);
+            _logger.LogInformation($"Posted with {data.Count()} items");
+            var mappedJobs = _mapper.Map<IEnumerable<TrainJob>>(data);
 
-            foreach (var j in _mappedJobs) {
+            int count = 0;
+            foreach (var j in mappedJobs)
+            {
                 if (!_ctx.TrainJobs.Any(t => t.JobId == j.JobId))
                 {
                     j.CreatedAt = DateTime.Now;
 
                     _ctx.TrainJobs.Add(j);
-                    await _ctx.SaveChangesAsync();
+                    count += await _ctx.SaveChangesAsync();
                 }
             }
+
+            _logger.LogInformation($"Inserted {count} items");
 
             return Accepted();
         }
@@ -62,7 +63,7 @@ namespace JobsTrainer.Controllers
                     continue;
 
                 _ctx.Companies.Add(new Company { Name = jc.CompanyName, Link = tj.FirstOrDefault(t => t.CompanyLink != null)?.CompanyLink, IsFriendly = s });
-                
+
                 _ctx.TrainJobs.RemoveRange(tj);
                 _ctx.SaveChanges();
             }

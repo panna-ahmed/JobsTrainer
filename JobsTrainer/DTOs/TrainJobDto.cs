@@ -10,6 +10,9 @@ namespace JobsTrainer.DTOs
 
         public uint JobId { get; set; }
 
+        public uint? NextJobId { get; set; }
+        public uint? PrevJobId { get; set; }
+
         public bool Sentiment { get; set; }
 
         public string Country { get; set; }
@@ -17,6 +20,8 @@ namespace JobsTrainer.DTOs
         public string Company { get; set; }
 
         public string CompanyLink { get; set; }
+
+        public DateTime CreatedAt { get; set; }
 
         public bool IsEasy { get; set; }
     }

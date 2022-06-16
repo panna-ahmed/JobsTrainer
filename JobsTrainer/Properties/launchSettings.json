@@ -9,12 +9,12 @@
     },
     "JobsTrainer.Web": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchUrl": "http://localhost:8082/ProofReading/Edit/2587436018",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:8082"
+      "applicationUrl": "http://localhost:8082/"
     }
   },
   "iisSettings": {

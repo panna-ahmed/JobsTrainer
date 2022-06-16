@@ -1,4 +1,6 @@
-﻿using JobsTrainer.Models;
+﻿using AutoMapper;
+using JobsTrainer.DTOs;
+using JobsTrainer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +9,12 @@ namespace JobsTrainer.Controllers
     public class ProofReadingController : Controller
     {
         private readonly TrainingContext _context;
+        private readonly IMapper _mapper;
 
-        public ProofReadingController(TrainingContext context)
+        public ProofReadingController(TrainingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: ProofReading
@@ -74,7 +78,16 @@ namespace JobsTrainer.Controllers
             {
                 return NotFound();
             }
-            return View(trainJob);
+
+            var mappedJob = _mapper.Map<TrainJobDto>(trainJob);
+
+            var prev = _context.TrainJobs.OrderByDescending(t => t.JobId).Where(x => x.JobId < id).FirstOrDefault();
+            var next = _context.TrainJobs.OrderBy(t => t.JobId).Where(x => x.JobId > id).FirstOrDefault();
+
+            mappedJob.PrevJobId = prev?.JobId;
+            mappedJob.NextJobId = next?.JobId;
+
+            return View(mappedJob);
         }
 
         // POST: ProofReading/Edit/5
