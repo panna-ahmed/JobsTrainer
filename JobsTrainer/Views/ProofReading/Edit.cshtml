@@ -29,20 +29,24 @@
 </span>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="JobId" />
             
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <span>
+                    @Model.Title
+                </span>
                 <a target="_blank" href=@string.Format("https://www.linkedin.com/jobs/view/{0}", Model.JobId)>Link</a>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Sample" class="control-label"></label>
-                <textarea asp-for="Sample" class="form-control" rows="5"></textarea>
+                <p>
+                    @Model.Sample
+                </p>
                 <span asp-validation-for="Sample" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
@@ -57,7 +61,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Company" class="control-label"></label>
-                <input asp-for="Company" class="form-control" />
+                <span>
+                    @Model.Company
+                </span>
                 <span asp-validation-for="Company" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -67,7 +73,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
+                <span>
+                    @Model.CreatedAt
+                </span>
                 <span asp-validation-for="CreatedAt" class="text-danger"></span>
             </div>
             <div class="form-group form-check">

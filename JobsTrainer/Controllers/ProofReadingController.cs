@@ -95,7 +95,7 @@ namespace JobsTrainer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(uint id, [Bind("JobId,Title,Sample,Sentiment,Country,Company,CompanyLink,CreatedAt,IsEasy")] TrainJob trainJob)
+        public async Task<IActionResult> Edit(uint id, [Bind("JobId, Sentiment, Country, CompanyLink")] TrainJob trainJob)
         {
             if (id != trainJob.JobId)
             {
@@ -106,7 +106,11 @@ namespace JobsTrainer.Controllers
             {
                 try
                 {
-                    _context.Update(trainJob);
+                    _context.TrainJobs.Attach(trainJob);
+                    _context.Entry(trainJob).Property(x => x.Sentiment).IsModified = true;
+                    _context.Entry(trainJob).Property(x => x.Country).IsModified = true;
+                    _context.Entry(trainJob).Property(x => x.CompanyLink).IsModified = true;
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -120,7 +124,8 @@ namespace JobsTrainer.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Edit), id);
             }
             return View(trainJob);
         }
