@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace JobsTrainer.Controllers.Api
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/companies")]
     public class CompaniesController : Controller
     {
         private readonly TrainingContext _context;
@@ -15,7 +15,7 @@ namespace JobsTrainer.Controllers.Api
             _context = context;
         }
 
-        [HttpGet("api/companies")]
+        [HttpGet]
         public async Task<IActionResult> All()
         {
             var companies = await _context.Companies.Select(c => c.Name).ToArrayAsync();

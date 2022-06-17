@@ -54,6 +54,7 @@ app.UseCors();
 app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
+
 app.MapRazorPages();
 
 app.Run();

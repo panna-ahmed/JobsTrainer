@@ -17,12 +17,34 @@ namespace JobsTrainer.Controllers
             _mapper = mapper;
         }
 
-        // GET: ProofReading
-        public async Task<IActionResult> Index()
+        [Route("ProofReading")]
+        [Route("ProofReading/Index")]
+        [Route("ProofReading/Index/{page?}")]
+        public async Task<IActionResult> Index(int? page, [FromQuery] string search, bool? isPositive)
         {
-            return _context.TrainJobs != null ?
-                        View(await _context.TrainJobs.ToListAsync()) :
-                        Problem("Entity set 'TrainingContext.TrainJobs'  is null.");
+            if (_context.TrainJobs != null)
+            {
+                ViewBag.Page = page ?? 0;
+
+                var tj = _context.TrainJobs.OrderBy(tj => tj.JobId).AsQueryable();
+                
+                if(!string.IsNullOrEmpty(search))
+                {
+                    tj = tj.Where(t => t.Title.Contains(search));
+                    ViewBag.SearchTerm = search;
+                }
+
+                if (isPositive != null)
+                {
+                    tj = tj.Where(t => t.Sentiment == isPositive);
+                    ViewBag.IsPositive = isPositive;
+                }
+
+                ViewBag.Count = await tj.CountAsync();
+                return View(await tj.Skip((page ?? 0) * 10).Take(10).ToListAsync());
+            } 
+            else 
+                return Problem("Entity set 'TrainingContext.TrainJobs'  is null.");
         }
 
         // GET: ProofReading/Details/5
@@ -66,7 +88,7 @@ namespace JobsTrainer.Controllers
         }
 
         // GET: ProofReading/Edit/5
-        public async Task<IActionResult> Edit(uint? id)
+        public async Task<IActionResult> Edit(uint? id, [FromQuery] string search, bool? isPositive)
         {
             if (id == null || _context.TrainJobs == null)
             {
@@ -81,8 +103,21 @@ namespace JobsTrainer.Controllers
 
             var mappedJob = _mapper.Map<TrainJobDto>(trainJob);
 
-            var prev = _context.TrainJobs.OrderByDescending(t => t.JobId).Where(x => x.JobId < id).FirstOrDefault();
-            var next = _context.TrainJobs.OrderBy(t => t.JobId).Where(x => x.JobId > id).FirstOrDefault();
+            var tj = _context.TrainJobs.OrderBy(tj => tj.JobId).AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                tj = tj.Where(t => t.Title.Contains(search));
+                ViewBag.SearchTerm = search;
+            }
+
+            if (isPositive != null)
+            {
+                tj = tj.Where(t => t.Sentiment == isPositive);
+                ViewBag.IsPositive = isPositive;
+            }
+
+            var prev = tj.OrderByDescending(t => t.JobId).Where(x => x.JobId < id).FirstOrDefault();
+            var next = tj.OrderBy(t => t.JobId).Where(x => x.JobId > id).FirstOrDefault();
 
             mappedJob.PrevJobId = prev?.JobId;
             mappedJob.NextJobId = next?.JobId;

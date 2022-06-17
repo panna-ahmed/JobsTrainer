@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace JobsTrainer.DTOs
 {
@@ -13,6 +14,7 @@ namespace JobsTrainer.DTOs
         public uint? NextJobId { get; set; }
         public uint? PrevJobId { get; set; }
 
+        [Display(Name = "Positive")]
         public bool Sentiment { get; set; }
 
         public string Country { get; set; }

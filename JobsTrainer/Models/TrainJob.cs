@@ -13,6 +13,7 @@ namespace JobsTrainer.Models
 
         public string Sample { get; set; }
 
+        [Display( Name = "Positive")]
         public bool Sentiment { get; set; }
 
         [StringLength(100)]

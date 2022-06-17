@@ -9,14 +9,17 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<div>
+    <input type="text" id="searchText" value="@ViewBag.SearchTerm">
+    <button id="searchBtn">Search</button>
+    &nbsp;
+    <input type="checkbox" id="cbPositive" onclick="triState(this)"> <label>Positive</label>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sample)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Sentiment)
@@ -40,13 +43,10 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sample)
+                <a target="_blank" href=@string.Format("https://www.linkedin.com/jobs/view/{0}", @item.JobId)>@item.Title</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Sentiment)
@@ -67,11 +67,68 @@
                 @Html.DisplayFor(modelItem => item.IsEasy)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.JobId">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.JobId" asp-route-search="@ViewBag.SearchTerm"  asp-route-isPositive="@ViewBag.IsPositive">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.JobId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.JobId">Delete</a>
             </td>
         </tr>
 }
     </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                @if (ViewBag.Page > 0)
+                {
+                    <a asp-action="Index" asp-route-page="@(ViewBag.Page-1)" asp-route-search="@ViewBag.SearchTerm"  asp-route-isPositive="@ViewBag.IsPositive">Prev</a>
+                }
+                else 
+                {
+                    <span>Prev</span>
+                }
+                &nbsp; 
+                @if (ViewBag.Page < ViewBag.Count / 10)
+                {
+                    <a asp-action="Index" asp-route-page="@(ViewBag.Page + 1)" asp-route-search="@ViewBag.SearchTerm" asp-route-isPositive="@ViewBag.IsPositive">Next</a>
+                }
+                else
+                {
+                    <span>Next</span>
+                }
+            </td>            
+        </tr>        
+    </tfoot>
 </table>
+
+@section scripts {
+    <script>
+        var cbPositive = document.getElementById("cbPositive");
+        var searchText = document.getElementById("searchText");
+
+        searchText.value = "@ViewBag.SearchTerm?.ToString()";
+
+        document.getElementById("searchBtn").addEventListener('click', function(){
+            let url = "/ProofReading/Index?search=" + encodeURIComponent(document.getElementById("searchText").value);
+
+            if(!cbPositive.readOnly)
+            {
+                url = url + '&isPositive=' + cbPositive.checked;
+            }
+
+            window.location.href = url;
+        });
+
+        @if (ViewBag.IsPositive == null)
+        {
+            @("cbPositive.readOnly = cbPositive.indeterminate = true;")
+        }
+        else
+        {
+            @($"cbPositive.checked = {ViewBag.IsPositive.ToString().ToLower()}")
+        }
+
+        function triState(cb) {
+            if (cb.readOnly) cb.checked = cb.readOnly = false;
+            else if (!cb.checked) cb.readOnly = cb.indeterminate = true;
+        }
+    </script>
+}

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace JobsTrainer.Controllers.api
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/train")]
     public class TrainingController : ControllerBase
     {
         private readonly ILogger<TrainingController> _logger;
@@ -21,7 +21,7 @@ namespace JobsTrainer.Controllers.api
             _logger = logger;
         }
 
-        [HttpPost("train/create")]
+        [HttpPost("create")]
         public async Task<IActionResult> Create(IEnumerable<TrainJobDto> data)
         {
             _logger.LogInformation($"Posted with {data.Count()} items");
@@ -44,7 +44,7 @@ namespace JobsTrainer.Controllers.api
             return Accepted();
         }
 
-        [HttpPost("train/optimize")]
+        [HttpPost("optimize")]
         public IActionResult Optimize()
         {
             var jobCounts = _ctx.TrainJobs.GroupBy(t => t.Company)
@@ -62,7 +62,7 @@ namespace JobsTrainer.Controllers.api
                 if (tj.Any(t => t.Sentiment != s))
                     continue;
 
-                _ctx.Companies.Add(new Company { Name = jc.CompanyName, Link = tj.FirstOrDefault(t => t.CompanyLink != null)?.CompanyLink, IsFriendly = s });
+                _ctx.Companies.Add(new Company { Name = jc.CompanyName, Link = tj.FirstOrDefault(t => t.CompanyLink != null)?.CompanyLink, IsFriendly = s, CreatedAt = DateTime.Now });
 
                 _ctx.TrainJobs.RemoveRange(tj);
                 _ctx.SaveChanges();

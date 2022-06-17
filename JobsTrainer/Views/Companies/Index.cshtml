@@ -34,7 +34,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Link)
+                @if(!string.IsNullOrEmpty(item.Link)){
+                    <a target="_blank" href=@string.Format("https://www.linkedin.com{0}", item.Link)>Link</a>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
