@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JobsTrainer.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ProofReadingController : Controller
     {
         private readonly TrainingContext _context;

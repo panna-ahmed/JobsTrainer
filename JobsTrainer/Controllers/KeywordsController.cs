@@ -9,6 +9,7 @@ using JobsTrainer.Models;
 
 namespace JobsTrainer.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class KeywordsController : Controller
     {
         private readonly TrainingContext _context;
