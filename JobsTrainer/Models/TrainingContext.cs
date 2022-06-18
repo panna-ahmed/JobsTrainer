@@ -12,5 +12,6 @@ namespace JobsTrainer.Models
 
         public DbSet<Company> Companies { get; set; }
 
+        public DbSet<Keyword> Keywords { get; set; }
     }
 }
