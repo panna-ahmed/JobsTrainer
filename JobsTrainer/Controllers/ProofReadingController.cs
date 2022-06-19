@@ -123,6 +123,11 @@ namespace JobsTrainer.Controllers
             mappedJob.PrevJobId = prev?.JobId;
             mappedJob.NextJobId = next?.JobId;
 
+            foreach(var k in _context.Keywords)
+            {
+                mappedJob.Sample = mappedJob.Sample.Replace(k.Name, $"<mark>{k.Name}</mark>");
+            }
+
             return View(mappedJob);
         }
 

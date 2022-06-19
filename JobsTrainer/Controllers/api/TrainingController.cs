@@ -44,6 +44,16 @@ namespace JobsTrainer.Controllers.api
             return Accepted();
         }
 
+        [HttpPost("exists")]
+        public async Task<IActionResult> Exists(int jobId)
+        {
+            var exists = await _ctx.TrainJobs.AnyAsync(t => t.JobId == jobId);
+            if (exists)
+                return Accepted();
+            else
+                return NotFound();
+        }
+
         [HttpPost("optimize")]
         public IActionResult Optimize()
         {

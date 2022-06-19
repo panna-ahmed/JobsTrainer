@@ -45,7 +45,7 @@
             <div class="form-group">
                 <label asp-for="Sample" class="control-label"></label>
                 <p>
-                    @Model.Sample
+                    @Html.Raw(Model.Sample)
                 </p>
                 <span asp-validation-for="Sample" class="text-danger"></span>
             </div>
