@@ -45,9 +45,9 @@ namespace JobsTrainer.Controllers.api
         }
 
         [HttpPost("exists")]
-        public async Task<IActionResult> Exists([FromBody]uint[] jobIds)
+        public IActionResult Exists([FromBody] CheckJobDto[] jobIds)
         {
-            var existingJobs = await _ctx.TrainJobs.Where(t => jobIds.Any(j => j == t.JobId)).Select(t => t.JobId).ToListAsync();
+            var existingJobs = jobIds.Where(t => !_ctx.TrainJobs.Any(j => j.JobId == t.JobId)).ToList();
 
             _logger.LogInformation($"Existing {existingJobs.Count} items");
 
