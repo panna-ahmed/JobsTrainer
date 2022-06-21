@@ -45,13 +45,13 @@ namespace JobsTrainer.Controllers.api
         }
 
         [HttpPost("exists")]
-        public async Task<IActionResult> Exists(int jobId)
+        public async Task<IActionResult> Exists([FromBody]uint[] jobIds)
         {
-            var exists = await _ctx.TrainJobs.AnyAsync(t => t.JobId == jobId);
-            if (exists)
-                return Accepted();
-            else
-                return NotFound();
+            var existingJobs = await _ctx.TrainJobs.Where(t => jobIds.Any(j => j == t.JobId)).Select(t => t.JobId).ToListAsync();
+
+            _logger.LogInformation($"Existing {existingJobs.Count} items");
+
+            return Ok(existingJobs);
         }
 
         [HttpPost("optimize")]
