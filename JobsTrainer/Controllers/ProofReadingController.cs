@@ -21,31 +21,49 @@ namespace JobsTrainer.Controllers
         [Route("ProofReading")]
         [Route("ProofReading/Index")]
         [Route("ProofReading/Index/{page?}")]
-        public async Task<IActionResult> Index(int? page, [FromQuery] string search, bool? isPositive)
+        public async Task<IActionResult> Index(int? page, [FromQuery] string search, bool? isPositive, string sortOrder)
         {
-            if (_context.TrainJobs != null)
-            {
-                ViewBag.Page = page ?? 0;
-
-                var tj = _context.TrainJobs.OrderBy(tj => tj.JobId).AsQueryable();
-                
-                if(!string.IsNullOrEmpty(search))
-                {
-                    tj = tj.Where(t => t.Title.Contains(search));
-                    ViewBag.SearchTerm = search;
-                }
-
-                if (isPositive != null)
-                {
-                    tj = tj.Where(t => t.Sentiment == isPositive);
-                    ViewBag.IsPositive = isPositive;
-                }
-
-                ViewBag.Count = await tj.CountAsync();
-                return View(await tj.Skip((page ?? 0) * 10).Take(10).ToListAsync());
-            } 
-            else 
+            if (_context.TrainJobs == null)
                 return Problem("Entity set 'TrainingContext.TrainJobs'  is null.");
+
+            ViewBag.Page = page ?? 0;
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            var tj = _context.TrainJobs.AsQueryable();
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    tj = tj.OrderByDescending(s => s.Title);
+                    break;
+                case "Date":
+                    tj = tj.OrderBy(s => s.CreatedAt);
+                    break;
+                case "date_desc":
+                    tj = tj.OrderByDescending(s => s.CreatedAt);
+                    break;
+                default:
+                    tj = tj.OrderBy(s => s.Title);
+                    break;
+            }
+                
+            if(!string.IsNullOrEmpty(search))
+            {
+                tj = tj.Where(t => t.Title.Contains(search));
+                ViewBag.SearchTerm = search;
+            }
+
+            if (isPositive != null)
+            {
+                tj = tj.Where(t => t.Sentiment == isPositive);
+                ViewBag.IsPositive = isPositive;
+            }
+
+            ViewBag.Count = await tj.CountAsync();
+            return View(await tj.Skip((page ?? 0) * 10).Take(10).ToListAsync());
+            
         }
 
         // GET: ProofReading/Details/5

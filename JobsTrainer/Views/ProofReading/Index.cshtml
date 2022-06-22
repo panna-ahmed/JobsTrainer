@@ -19,7 +19,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.NameSortParm, search = ViewBag.SearchTerm })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Sentiment)
@@ -34,7 +34,7 @@
                 @Html.DisplayNameFor(model => model.CompanyLink)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
+                @Html.ActionLink("CreatedAt", "Index", new { sortOrder = ViewBag.DateSortParm, search = ViewBag.SearchTerm })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsEasy)
@@ -67,7 +67,7 @@
                 @Html.DisplayFor(modelItem => item.IsEasy)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.JobId" asp-route-search="@ViewBag.SearchTerm"  asp-route-isPositive="@ViewBag.IsPositive">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.JobId" asp-route-search="@ViewBag.SearchTerm"  asp-route-isPositive="@ViewBag.IsPositive" asp-route-sortOrder="@ViewBag.CurrentSort">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.JobId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.JobId">Delete</a>
             </td>
@@ -79,7 +79,7 @@
             <td>
                 @if (ViewBag.Page > 0)
                 {
-                    <a asp-action="Index" asp-route-page="@(ViewBag.Page-1)" asp-route-search="@ViewBag.SearchTerm"  asp-route-isPositive="@ViewBag.IsPositive">Prev</a>
+                    <a asp-action="Index" asp-route-page="@(ViewBag.Page-1)" asp-route-search="@ViewBag.SearchTerm"  asp-route-isPositive="@ViewBag.IsPositive" asp-route-sortOrder="@ViewBag.CurrentSort">Prev</a>
                 }
                 else 
                 {
@@ -88,7 +88,7 @@
                 &nbsp; 
                 @if (ViewBag.Page < ViewBag.Count / 10)
                 {
-                    <a asp-action="Index" asp-route-page="@(ViewBag.Page + 1)" asp-route-search="@ViewBag.SearchTerm" asp-route-isPositive="@ViewBag.IsPositive">Next</a>
+                    <a asp-action="Index" asp-route-page="@(ViewBag.Page + 1)" asp-route-search="@ViewBag.SearchTerm" asp-route-isPositive="@ViewBag.IsPositive" asp-route-sortOrder="@ViewBag.CurrentSort">Next</a>
                 }
                 else
                 {
