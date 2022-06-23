@@ -25,8 +25,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\JobsTrainerML.Model\JobsTrainerML.Model.csproj" />
-  </ItemGroup>
-
 </Project>

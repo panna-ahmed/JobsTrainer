@@ -6,9 +6,9 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["JobsTrainer.csproj", "."]
+COPY ["./JobsTrainer/JobsTrainer.csproj", "."]
 RUN dotnet restore "./JobsTrainer.csproj"
-COPY . .
+COPY ./JobsTrainer .
 WORKDIR "/src/."
 RUN dotnet build "JobsTrainer.csproj" -c Release -o /app/build
 

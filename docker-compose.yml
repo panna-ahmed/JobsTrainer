@@ -6,3 +6,5 @@ services:
     build:
       context: .
       dockerfile: JobsTrainer/Dockerfile
+    ports:
+      - 8082:80
