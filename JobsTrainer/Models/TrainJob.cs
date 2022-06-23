@@ -1,8 +1,10 @@
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JobsTrainer.Models
 {
+    [Index(nameof(Title), nameof(CreatedAt))]
     public class TrainJob
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
