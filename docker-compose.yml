@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  jobstrainer:
+    image: ${DOCKER_REGISTRY-}jobstrainer
+    build:
+      context: .
+      dockerfile: JobsTrainer/Dockerfile
