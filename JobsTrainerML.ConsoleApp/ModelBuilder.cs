@@ -12,7 +12,7 @@ namespace JobsTrainerML.ConsoleApp
 {
     public static class ModelBuilder
     {
-        private static string TRAIN_DATA_FILEPATH = @"C:\Users\panna\AppData\Local\Temp\80f1b7af-bc0b-4936-892d-35499d77a687.tsv";
+        private static string TRAIN_DATA_FILEPATH = @"C:\Users\panna\AppData\Local\Temp\8db4b20a-dd2f-40e1-a97c-8fb41fd33afd.tsv";
         private static string MODEL_FILEPATH = @"C:\Users\panna\AppData\Local\Temp\MLVSTools\JobsTrainerML\JobsTrainerML.Model\MLModel.zip";
         // Create MLContext to be shared across the model creation workflow objects 
         // Set a random seed for repeatable/deterministic results across multiple trainings.
@@ -50,7 +50,7 @@ namespace JobsTrainerML.ConsoleApp
                                       .Append(mlContext.Transforms.NormalizeMinMax("Features", "Features"))
                                       .AppendCacheCheckpoint(mlContext);
             // Set the training algorithm 
-            var trainer = mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.AveragedPerceptron(labelColumnName: "Sentiment", numberOfIterations: 10, featureColumnName: "Features"), labelColumnName: "Sentiment")
+            var trainer = mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.SgdCalibrated(labelColumnName: "Sentiment", featureColumnName: "Features"), labelColumnName: "Sentiment")
                                       .Append(mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel", "PredictedLabel"));
 
             var trainingPipeline = dataProcessPipeline.Append(trainer);

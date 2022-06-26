@@ -12,7 +12,7 @@ namespace JobsTrainerML.ConsoleApp
             // Create single instance of sample data from first line of dataset for model input
             ModelInput sampleData = new ModelInput()
             {
-                Sample = @"Rigour Research are a UK based data collection and analytics company with a global client base and global staffing. We are seeking a Senior Programmer who can work from anywhere in the world.",
+                Sample = @"",
             };
 
             // Make a single prediction on the sample data and print results

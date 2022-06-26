@@ -27,7 +27,7 @@ namespace JobsTrainerML.Model
             MLContext mlContext = new MLContext();
 
             // Load model & create prediction engine
-            string modelPath = @"C:\Users\panna\AppData\Local\Temp\MLVSTools\JobsTrainerML\JobsTrainerML.Model\MLModel.zip";
+            string modelPath = "/app/bin/Debug/net6.0/MLModel.zip";
             ITransformer mlModel = mlContext.Model.Load(modelPath, out var modelInputSchema);
             var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
 
