@@ -1,0 +1,190 @@
+﻿{
+  "TrainingTime": 60,
+  "Scenario": "Classification",
+  "DataSource": {
+    "Type": "SQL",
+    "Version": 1,
+    "ColumnProperties": [
+      {
+        "ColumnName": "JobId",
+        "ColumnPurpose": "Ignore",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 2
+      },
+      {
+        "ColumnName": "Sample",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 2
+      },
+      {
+        "ColumnName": "Sentiment",
+        "ColumnPurpose": "Label",
+        "ColumnDataFormat": "Boolean",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 2
+      },
+      {
+        "ColumnName": "Country",
+        "ColumnPurpose": "Ignore",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 2
+      },
+      {
+        "ColumnName": "Company",
+        "ColumnPurpose": "Ignore",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 2
+      },
+      {
+        "ColumnName": "CreatedAt",
+        "ColumnPurpose": "Ignore",
+        "ColumnDataFormat": "DateTime",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 2
+      },
+      {
+        "ColumnName": "IsEasy",
+        "ColumnPurpose": "Ignore",
+        "ColumnDataFormat": "Boolean",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 2
+      },
+      {
+        "ColumnName": "Title",
+        "ColumnPurpose": "Ignore",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 2
+      },
+      {
+        "ColumnName": "CompanyLink",
+        "ColumnPurpose": "Ignore",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 2
+      }
+    ],
+    "ConnectionString": "Data Source=.;Initial Catalog=TrainingJobsDb;Integrated Security=True",
+    "CommandString": "SELECT CAST(JobId as REAL), Sample, Sentiment, Country, Company, CreatedAt, IsEasy, Title, CompanyLink FROM [dbo].[TrainJobs]",
+    "DatabaseName": "TrainingJobsDb",
+    "SelectedTableDbo": "dbo",
+    "TableName": "TrainJobs"
+  },
+  "Environment": {
+    "Type": "LocalCPU",
+    "Version": 1
+  },
+  "RunHistory": {
+    "Version": 1,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 0,
+        "Type": "Trial",
+        "TrainerName": "SdcaLogisticRegressionBinary",
+        "Score": 0.48974047107288732,
+        "RuntimeInSeconds": 6.815000057220459
+      },
+      {
+        "Version": 0,
+        "Type": "Trial",
+        "TrainerName": "LbfgsLogisticRegressionBinary",
+        "Score": 0.81996812305608047,
+        "RuntimeInSeconds": 10.116000175476074
+      },
+      {
+        "Version": 0,
+        "Type": "Trial",
+        "TrainerName": "FastTreeBinary",
+        "Score": 0.71014517985986214,
+        "RuntimeInSeconds": 5.8319997787475586
+      },
+      {
+        "Version": 0,
+        "Type": "Trial",
+        "TrainerName": "FastForestBinary",
+        "Score": 0.70488460382079388,
+        "RuntimeInSeconds": 6.0209999084472656
+      },
+      {
+        "Version": 0,
+        "Type": "Trial",
+        "TrainerName": "SdcaLogisticRegressionBinary",
+        "Score": 0.48974047107288732,
+        "RuntimeInSeconds": 6.2350001335144043
+      },
+      {
+        "Version": 0,
+        "Type": "Trial",
+        "TrainerName": "FastTreeBinary",
+        "Score": 0.76669374872328866,
+        "RuntimeInSeconds": 6.8600001335144043
+      },
+      {
+        "Version": 0,
+        "Type": "Trial",
+        "TrainerName": "LightGbmBinary",
+        "Score": 0.71750438344630474,
+        "RuntimeInSeconds": 9.2290000915527344
+      },
+      {
+        "Version": 0,
+        "Type": "Trial",
+        "TrainerName": "LbfgsLogisticRegressionBinary",
+        "Score": 0.83264711048973028,
+        "RuntimeInSeconds": 6.0749998092651367
+      }
+    ],
+    "Pipeline": {
+      "parameter": {
+        "0": {
+          "InputColumnName": "Sample",
+          "OutputColumnName": "Sample"
+        },
+        "1": {
+          "InputColumnNames": [
+            "Sample"
+          ],
+          "OutputColumnName": "Features"
+        },
+        "2": {
+          "OutputColumnNames": [
+            "Features"
+          ],
+          "InputColumnNames": [
+            "Features"
+          ]
+        },
+        "3": {
+          "L1Regularization": 0.0661244243,
+          "L2Regularization": 0.5733557,
+          "LabelColumnName": "Sentiment",
+          "FeatureColumnName": "Features"
+        }
+      },
+      "estimators": [
+        "FeaturizeText",
+        "Concatenate",
+        "NormalizeMinMax",
+        "LbfgsLogisticRegressionBinary"
+      ]
+    },
+    "MetricName": "Accuracy"
+  },
+  "Type": "TrainingConfig",
+  "Version": 2
+}

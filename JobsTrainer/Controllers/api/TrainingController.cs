@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using JobsTrainer.DTOs;
 using JobsTrainer.Models;
-using JobsTrainerML.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,32 +52,6 @@ namespace JobsTrainer.Controllers.api
             _logger.LogInformation($"Existing {existingJobs.Count} items");
 
             return Ok(existingJobs);
-        }
-
-        [HttpPost("Detect")]
-        public IActionResult Detect(IEnumerable<TrainJobDto> data)
-        {
-            foreach (var d in data)
-            {
-                // Create single instance of sample data from first line of dataset for model input
-                ModelInput sampleData = new ModelInput()
-                {
-                    Sample = d.Sample,
-                };
-
-                // Make a single prediction on the sample data and print results
-                var predictionResult = ConsumeModel.Predict(sampleData);
-
-                //Console.WriteLine("Using model to make single prediction -- Comparing actual Sentiment with predicted Sentiment from sample data...\n\n");
-                //Console.WriteLine($"Sample: {sampleData.Sample}");
-                //Console.WriteLine($"\n\nPredicted Sentiment value {predictionResult.Prediction} \nPredicted Sentiment scores: [{String.Join(",", predictionResult.Score)}]\n\n");
-                //Console.WriteLine("=============== End of process, hit any key to finish ===============");
-                //Console.ReadKey();
-
-                d.Sentiment = predictionResult.Score.First() >= 0.9;
-            }
-
-            return Ok(data);
         }
 
         [HttpPost("optimize")]
