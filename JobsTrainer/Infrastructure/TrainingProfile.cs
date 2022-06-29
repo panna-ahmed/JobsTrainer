@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using JobsTrainer.DTOs;
+using JobsTrainer.Core.DTOs;
 using JobsTrainer.Models;
 
 namespace JobsTrainer.Infrastructure

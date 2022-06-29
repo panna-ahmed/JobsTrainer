@@ -9,6 +9,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobsTrainerML.Api", "JobsTrainerML.Api\JobsTrainerML.Api.csproj", "{ECF34548-1D33-494A-BD90-CF7E718E966D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobsTrainer.Core", "JobsTrainer.Core\JobsTrainer.Core.csproj", "{F5142F3B-9FA3-4154-B117-14D2D40455E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ECF34548-1D33-494A-BD90-CF7E718E966D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECF34548-1D33-494A-BD90-CF7E718E966D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECF34548-1D33-494A-BD90-CF7E718E966D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5142F3B-9FA3-4154-B117-14D2D40455E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5142F3B-9FA3-4154-B117-14D2D40455E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5142F3B-9FA3-4154-B117-14D2D40455E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5142F3B-9FA3-4154-B117-14D2D40455E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

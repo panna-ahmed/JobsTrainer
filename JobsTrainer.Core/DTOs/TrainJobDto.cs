@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace JobsTrainer.DTOs
+namespace JobsTrainer.Core.DTOs
 {
     public class TrainJobDto
     {

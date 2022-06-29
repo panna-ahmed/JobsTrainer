@@ -10,33 +10,8 @@ public partial class MLModel
     #region model input class
     public class ModelInput
     {
-        [ColumnName(@"JobId")]
-        public float JobId { get; set; }
-
         [ColumnName(@"Sample")]
         public string Sample { get; set; }
-
-        [ColumnName(@"Sentiment")]
-        public bool Sentiment { get; set; }
-
-        [ColumnName(@"Country")]
-        public string Country { get; set; }
-
-        [ColumnName(@"Company")]
-        public string Company { get; set; }
-
-        [ColumnName(@"CreatedAt")]
-        public DateTime CreatedAt { get; set; }
-
-        [ColumnName(@"IsEasy")]
-        public bool IsEasy { get; set; }
-
-        [ColumnName(@"Title")]
-        public string Title { get; set; }
-
-        [ColumnName(@"CompanyLink")]
-        public string CompanyLink { get; set; }
-
     }
 
     #endregion
@@ -46,37 +21,7 @@ public partial class MLModel
     /// </summary>
     #region model output class
     public class ModelOutput
-    {
-        [ColumnName(@"JobId")]
-        public float JobId { get; set; }
-
-        [ColumnName(@"Sample")]
-        public float[] Sample { get; set; }
-
-        [ColumnName(@"Sentiment")]
-        public bool Sentiment { get; set; }
-
-        [ColumnName(@"Country")]
-        public string Country { get; set; }
-
-        [ColumnName(@"Company")]
-        public string Company { get; set; }
-
-        [ColumnName(@"CreatedAt")]
-        public DateTime CreatedAt { get; set; }
-
-        [ColumnName(@"IsEasy")]
-        public bool IsEasy { get; set; }
-
-        [ColumnName(@"Title")]
-        public string Title { get; set; }
-
-        [ColumnName(@"CompanyLink")]
-        public string CompanyLink { get; set; }
-
-        [ColumnName(@"Features")]
-        public float[] Features { get; set; }
-
+    {        
         [ColumnName(@"PredictedLabel")]
         public bool PredictedLabel { get; set; }
 

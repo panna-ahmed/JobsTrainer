@@ -1,4 +1,4 @@
-﻿namespace JobsTrainer.DTOs
+﻿namespace JobsTrainer.Core.DTOs
 {
     public class CheckJobDto
     {

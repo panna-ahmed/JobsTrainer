@@ -1,4 +1,4 @@
-namespace JobsTrainer.Models
+namespace JobsTrainer.Core.DTOs
 {
     public class CompanyDto
     {
