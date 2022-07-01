@@ -8,7 +8,7 @@ using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
 using Microsoft.ML;
 
-namespace MLModel_WebApi1
+namespace JobsTrainerML_Api
 {
     public partial class MLModel
     {
@@ -37,7 +37,7 @@ namespace MLModel_WebApi1
             var pipeline = mlContext.Transforms.Text.FeaturizeText(inputColumnName:@"Sample",outputColumnName:@"Sample")      
                                     .Append(mlContext.Transforms.Concatenate(@"Features", new []{@"Sample"}))      
                                     .Append(mlContext.Transforms.NormalizeMinMax(@"Features", @"Features"))      
-                                    .Append(mlContext.BinaryClassification.Trainers.LbfgsLogisticRegression(new LbfgsLogisticRegressionBinaryTrainer.Options(){L1Regularization=0.06612442F,L2Regularization=0.5733557F,LabelColumnName=@"Sentiment",FeatureColumnName=@"Features"}));
+                                    .Append(mlContext.BinaryClassification.Trainers.LbfgsLogisticRegression(new LbfgsLogisticRegressionBinaryTrainer.Options(){L1Regularization=0.2517277F,L2Regularization=11.07949F,LabelColumnName=@"Sentiment",FeatureColumnName=@"Features"}));
 
             return pipeline;
         }
