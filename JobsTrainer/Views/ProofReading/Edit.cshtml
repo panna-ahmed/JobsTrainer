@@ -11,7 +11,7 @@
 <span>
     @if (Model.PrevJobId.HasValue)
     {
-        <a asp-action="Edit" asp-route-id="@Model.PrevJobId" asp-route-search="@ViewBag.SearchTerm"  asp-route-isPositive="@ViewBag.IsPositive">Prev</a>
+        <a asp-action="Edit" asp-route-page="@ViewBag.PrevPage" asp-route-id="@Model.PrevJobId" asp-route-search="@ViewBag.SearchTerm" asp-route-isPositive="@ViewBag.IsPositive" asp-route-navigator="@ViewBag.Navigator" asp-route-direction="prev" asp-route-sortOrder="@ViewBag.CurrentSort">Prev</a>
     }
     else
     {
@@ -20,7 +20,7 @@
     &nbsp;
     @if (Model.NextJobId.HasValue)
     {
-        <a asp-action="Edit" asp-route-id="@Model.NextJobId" asp-route-search="@ViewBag.SearchTerm"  asp-route-isPositive="@ViewBag.IsPositive">Next</a>
+        <a asp-action="Edit" asp-route-page="@ViewBag.NextPage" asp-route-id="@Model.NextJobId" asp-route-search="@ViewBag.SearchTerm" asp-route-isPositive="@ViewBag.IsPositive" asp-route-navigator="@ViewBag.Navigator" asp-route-direction="next" asp-route-sortOrder="@ViewBag.CurrentSort">Next</a>
     }
     else
     {

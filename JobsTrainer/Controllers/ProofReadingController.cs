@@ -3,6 +3,7 @@ using JobsTrainer.Core.DTOs;
 using JobsTrainer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace JobsTrainer.Controllers
 {
@@ -107,7 +108,7 @@ namespace JobsTrainer.Controllers
         }
 
         // GET: ProofReading/Edit/5
-        public async Task<IActionResult> Edit(uint? id, [FromQuery] string search, bool? isPositive)
+        public async Task<IActionResult> Edit(uint? id, [FromQuery] int? page, string search, bool? isPositive, string sortOrder, string navigator, string direction)
         {
             if (id == null || _context.TrainJobs == null)
             {
@@ -120,9 +121,30 @@ namespace JobsTrainer.Controllers
                 return NotFound();
             }
 
-            var mappedJob = _mapper.Map<TrainJobDto>(trainJob);
+            var mappedJob = _mapper.Map<TrainJobDto>(trainJob);           
 
-            var tj = _context.TrainJobs.OrderBy(tj => tj.JobId).AsQueryable();
+            ViewBag.PrevPage = ViewBag.NextPage = page ?? 0;
+
+            ViewBag.CurrentSort = sortOrder;
+
+            var tj = _context.TrainJobs.AsQueryable();
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    tj = tj.OrderByDescending(s => s.Title);
+                    break;
+                case "Date":
+                    tj = tj.OrderBy(s => s.CreatedAt);
+                    break;
+                case "date_desc":
+                    tj = tj.OrderByDescending(s => s.CreatedAt);
+                    break;
+                default:
+                    tj = tj.OrderBy(s => s.Title);
+                    break;
+            }
+
             if (!string.IsNullOrEmpty(search))
             {
                 tj = tj.Where(t => t.Title.Contains(search));
@@ -135,13 +157,63 @@ namespace JobsTrainer.Controllers
                 ViewBag.IsPositive = isPositive;
             }
 
-            var prev = tj.OrderByDescending(t => t.JobId).Where(x => x.JobId < id).FirstOrDefault();
-            var next = tj.OrderBy(t => t.JobId).Where(x => x.JobId > id).FirstOrDefault();
+            uint [] jobList = await tj.Skip((page ?? 0) * 10).Take(10).Select(j => j.JobId).ToArrayAsync();
 
-            mappedJob.PrevJobId = prev?.JobId;
-            mappedJob.NextJobId = next?.JobId;
+            int index = Array.IndexOf(jobList, id);
 
-            foreach(var k in _context.Keywords)
+            direction = direction != "next" && direction != "prev" ? "next" : direction;
+
+            uint? prev = null;
+            uint? next = null;
+
+            if (index >= 0)
+            {
+                if (index > 0) prev = jobList[index - 1];
+                if (index < jobList.Count()-1) next = jobList[index + 1];
+
+                if(next == null && jobList.Count() == 10)
+                {
+                    var n = await tj.Skip(((page ?? 0) + 1) * 10).Take(10).FirstOrDefaultAsync();
+                    next = n?.JobId;
+                    if (n != null) ViewBag.NextPage = page + 1;
+                }
+                else if(prev == null && page!= 0)
+                {
+                    var p = await tj.Skip(((page ?? 0) - 1) * 10).Take(10).LastOrDefaultAsync();
+                    prev = p?.JobId;
+
+                    if (p != null) ViewBag.PrevPage = page - 1;
+                }
+            }
+            else
+            {
+                if (direction == "prev")
+                {
+                    var result = await tj.Skip(((page ?? 0) - 1) * 10).Take(10).AnyAsync();
+                    if (result)
+                    {
+                        ViewBag.PrevPage = page - 1;
+                        ViewBag.NextPage = page;
+                    }
+                }
+                else if (direction == "next")
+                {
+                    var result = await tj.Skip(((page ?? 0) + 1) * 10).Take(10).AnyAsync();
+                    if (result)
+                    {
+                        ViewBag.PrevPage = page;
+                        ViewBag.NextPage = page + 1;
+                    }
+                }
+            }
+
+            //ViewBag.Navigator = string.Join(',', jobList.Select(x => x.JobId));
+            ViewBag.Direction = direction;
+
+            mappedJob.PrevJobId = prev;
+            mappedJob.NextJobId = next;
+
+            foreach (var k in _context.Keywords)
             {
                 mappedJob.Sample = mappedJob.Sample.Replace(k.Name, $"<mark>{k.Name}</mark>");
             }

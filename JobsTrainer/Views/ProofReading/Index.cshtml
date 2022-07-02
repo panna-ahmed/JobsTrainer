@@ -67,7 +67,7 @@
                 @Html.DisplayFor(modelItem => item.IsEasy)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.JobId" asp-route-search="@ViewBag.SearchTerm"  asp-route-isPositive="@ViewBag.IsPositive" asp-route-sortOrder="@ViewBag.CurrentSort">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.JobId" asp-route-search="@ViewBag.SearchTerm" asp-route-isPositive="@ViewBag.IsPositive" asp-route-sortOrder="@ViewBag.CurrentSort" asp-route-page="@ViewBag.Page">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.JobId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.JobId">Delete</a>
             </td>
