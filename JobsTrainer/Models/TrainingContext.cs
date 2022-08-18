@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using JobsTrainer.Models;
 
 namespace JobsTrainer.Models
 {
@@ -13,5 +14,7 @@ namespace JobsTrainer.Models
         public DbSet<Company> Companies { get; set; }
 
         public DbSet<Keyword> Keywords { get; set; }
+
+        public DbSet<JobsTrainer.Models.Skill> Skill { get; set; }
     }
 }

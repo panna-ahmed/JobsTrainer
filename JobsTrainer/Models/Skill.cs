@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace JobsTrainer.Models
 {
     [Index(nameof(Name), IsUnique = true)]
-    public class Keyword
+    public class Skill
     {
         [Key]
         public int Id { get; set; }
