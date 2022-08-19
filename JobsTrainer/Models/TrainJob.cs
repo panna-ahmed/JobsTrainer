@@ -30,5 +30,7 @@ namespace JobsTrainer.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public bool IsEasy { get; set; }
+
+        public string Skills { get; set; }
     }
 }

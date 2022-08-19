@@ -27,5 +27,7 @@ namespace JobsTrainer.Core.DTOs
         public DateTime CreatedAt { get; set; }
 
         public bool IsEasy { get; set; }
+
+        public string Skills { get; set; }
     }
 }
