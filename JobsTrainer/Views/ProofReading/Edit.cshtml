@@ -67,6 +67,13 @@
                 <span asp-validation-for="Company" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Skills" class="control-label"></label>
+                <span>
+                    <input asp-for="Skills" class="form-control" />
+                </span>
+                <span asp-validation-for="Skills" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="CompanyLink" class="control-label"></label>
                 <input asp-for="CompanyLink" class="form-control" /> <a target="_blank" href=@string.Format("https://www.linkedin.com{0}", Model.CompanyLink)>Link</a>
                 <span asp-validation-for="CompanyLink" class="text-danger"></span>
