@@ -5,6 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 
+using MongoDB.Bson;
+using MongoDB.Driver;
+using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
+
+
 namespace JobsTrainer.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -12,11 +19,13 @@ namespace JobsTrainer.Controllers
     {
         private readonly TrainingContext _context;
         private readonly IMapper _mapper;
+        private IConfiguration _configuration;
 
-        public ProofReadingController(TrainingContext context, IMapper mapper)
+        public ProofReadingController(TrainingContext context, IMapper mapper, IConfiguration configuration)
         {
             _context = context;
             _mapper = mapper;
+            _configuration = configuration;
         }
 
         [Route("ProofReading")]
@@ -302,5 +311,7 @@ namespace JobsTrainer.Controllers
         {
             return (_context.TrainJobs?.Any(e => e.JobId == id)).GetValueOrDefault();
         }
+
+        
     }
 }

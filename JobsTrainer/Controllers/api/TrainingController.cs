@@ -2,7 +2,12 @@
 using JobsTrainer.Core.DTOs;
 using JobsTrainer.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.ML;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using System.Configuration;
 
 namespace JobsTrainer.Controllers.api
 {
@@ -14,11 +19,14 @@ namespace JobsTrainer.Controllers.api
         private readonly IMapper _mapper;
         private readonly TrainingContext _ctx;
 
-        public TrainingController(ILogger<TrainingController> logger, IMapper mapper, TrainingContext ctx)
+        private IConfiguration _configuration;
+
+        public TrainingController(ILogger<TrainingController> logger, IMapper mapper, TrainingContext ctx, IConfiguration configuration)
         {
             _ctx = ctx;
             _mapper = mapper;
             _logger = logger;
+            _configuration = configuration;
         }
 
         [HttpPost("create")]
@@ -52,6 +60,40 @@ namespace JobsTrainer.Controllers.api
             _logger.LogInformation($"Existing {existingJobs.Count} items");
 
             return Ok(existingJobs);
+        }
+
+        [HttpPost("export")]
+        public async Task<ActionResult> Export()
+        {
+            var connStr = _configuration.GetConnectionString("RealJobsConnections");
+
+            var settings = MongoClientSettings.FromConnectionString(connStr);
+            settings.WaitQueueTimeout = TimeSpan.FromMinutes(1);
+            settings.MinConnectionPoolSize = 100;
+            settings.MaxConnectionPoolSize = 500;
+            // Set the version of the Stable API on the client.
+            settings.ServerApi = new ServerApi(ServerApiVersion.V1);
+            var client = new MongoClient(settings);
+
+            var database = client.GetDatabase("jobsPortalDb");
+            var collection = database.GetCollection<BsonDocument>("jobs");
+
+
+            var tj = _ctx.TrainJobs.Where(t => t.Sentiment == true).OrderByDescending(s => s.CreatedAt);
+
+            var jobs = await tj.Take(10).ToListAsync();
+            var docs = jobs.Select(s => new BsonDocument
+                {
+                    { "jobId", s.JobId },
+                    { "country", s.Country },
+                    { "company", s.Company },
+                    { "title", s.Title },
+                    { "skills", s.Skills },
+                });
+
+            await collection.InsertManyAsync(docs);
+
+            return Accepted();
         }
 
         [HttpPost("optimize")]
