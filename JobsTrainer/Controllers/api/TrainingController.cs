@@ -78,12 +78,11 @@ namespace JobsTrainer.Controllers.api
             var database = client.GetDatabase("jobsPortalDb");
             var collection = database.GetCollection<BsonDocument>("jobs");
 
-            var tj = _ctx.TrainJobs.Where(t => t.Sentiment == true && t.Exported == false).OrderByDescending(s => s.CreatedAt).ToList();
-            var tCount = tj.Count();
+            var tj = _ctx.TrainJobs.Where(t => t.Sentiment == true && t.Exported == false).OrderByDescending(s => s.CreatedAt);
 
-            for (var i = 0; i < tCount; i = i + 25)
+            while (tj.Count() > 0)
             {
-                var jobs = tj.Skip(i).Take(25).ToList();
+                var jobs = tj.Take(25).ToList();
                 var docs = jobs.Select(s => new BsonDocument
                 {
                     { "jobId", s.JobId },
