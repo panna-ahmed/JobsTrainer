@@ -32,5 +32,7 @@ namespace JobsTrainer.Models
         public bool IsEasy { get; set; }
 
         public string Skills { get; set; }
+
+        public bool Exported { get; set; }
     }
 }

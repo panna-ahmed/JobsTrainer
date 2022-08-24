@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using JobsTrainer.Models;
 
 namespace JobsTrainer.Models
 {
@@ -15,6 +14,6 @@ namespace JobsTrainer.Models
 
         public DbSet<Keyword> Keywords { get; set; }
 
-        public DbSet<JobsTrainer.Models.Skill> Skill { get; set; }
+        public DbSet<Skill> Skill { get; set; }
     }
 }

@@ -78,20 +78,26 @@ namespace JobsTrainer.Controllers.api
             var database = client.GetDatabase("jobsPortalDb");
             var collection = database.GetCollection<BsonDocument>("jobs");
 
+            var tj = _ctx.TrainJobs.Where(t => t.Sentiment == true && t.Exported == false).OrderByDescending(s => s.CreatedAt).ToList();
+            var tCount = tj.Count();
 
-            var tj = _ctx.TrainJobs.Where(t => t.Sentiment == true).OrderByDescending(s => s.CreatedAt);
-
-            var jobs = await tj.Take(10).ToListAsync();
-            var docs = jobs.Select(s => new BsonDocument
+            for (var i = 0; i < tCount; i = i + 25)
+            {
+                var jobs = tj.Skip(i).Take(25).ToList();
+                var docs = jobs.Select(s => new BsonDocument
                 {
                     { "jobId", s.JobId },
                     { "country", s.Country },
                     { "company", s.Company },
                     { "title", s.Title },
-                    { "skills", s.Skills },
+                    { "skills", s.Skills??"" },
                 });
 
-            await collection.InsertManyAsync(docs);
+                await collection.InsertManyAsync(docs);
+
+                jobs.ForEach(c => c.Exported = true);
+                _ctx.SaveChanges();
+            }
 
             return Accepted();
         }
