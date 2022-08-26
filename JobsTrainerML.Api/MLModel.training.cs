@@ -37,7 +37,7 @@ namespace JobsTrainerML_Api
             var pipeline = mlContext.Transforms.Text.FeaturizeText(inputColumnName:@"Sample",outputColumnName:@"Sample")      
                                     .Append(mlContext.Transforms.Concatenate(@"Features", new []{@"Sample"}))      
                                     .Append(mlContext.Transforms.NormalizeMinMax(@"Features", @"Features"))      
-                                    .Append(mlContext.BinaryClassification.Trainers.LbfgsLogisticRegression(new LbfgsLogisticRegressionBinaryTrainer.Options(){L1Regularization=0.2517277F,L2Regularization=11.07949F,LabelColumnName=@"Sentiment",FeatureColumnName=@"Features"}));
+                                    .Append(mlContext.BinaryClassification.Trainers.LbfgsLogisticRegression(new LbfgsLogisticRegressionBinaryTrainer.Options(){L1Regularization=0.09845836F,L2Regularization=4.57698F,LabelColumnName=@"Sentiment",FeatureColumnName=@"Features"}));
 
             return pipeline;
         }

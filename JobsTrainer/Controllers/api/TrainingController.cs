@@ -79,8 +79,9 @@ namespace JobsTrainer.Controllers.api
             var collection = database.GetCollection<BsonDocument>("jobs");
 
             var tj = _ctx.TrainJobs.Where(t => t.Sentiment == true && t.Exported == false).OrderByDescending(s => s.CreatedAt);
+            int count  = tj.Count();
 
-            while (tj.Count() > 0)
+            while (count > 0)
             {
                 var jobs = tj.Take(25).ToList();
                 var docs = jobs.Select(s => new BsonDocument
@@ -96,6 +97,8 @@ namespace JobsTrainer.Controllers.api
 
                 jobs.ForEach(c => c.Exported = true);
                 _ctx.SaveChanges();
+
+                count -= 25;
             }
 
             return Accepted();
