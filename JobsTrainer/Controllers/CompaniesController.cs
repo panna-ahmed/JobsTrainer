@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using JobsTrainer.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using JobsTrainer.Models;
-
+using System.Data;
+using System.Data.OleDb;
 namespace JobsTrainer.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     public class CompaniesController : Controller
     {
         private readonly TrainingContext _context;
+        private readonly IWebHostEnvironment _environment;
+        private readonly IConfiguration _configuration;
 
-        public CompaniesController(TrainingContext context)
+        public CompaniesController(TrainingContext context, IWebHostEnvironment environment, IConfiguration configuration)
         {
             _context = context;
-        }        
+            _environment = environment;
+            _configuration = configuration;
+        }
 
         // GET: Companies
         public async Task<IActionResult> Index()
@@ -151,6 +151,32 @@ namespace JobsTrainer.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult Index(IFormFile postedFile)
+        {
+            if (postedFile != null)
+            {
+                //Create a Folder.
+                string path = Path.Combine(this._environment.WebRootPath, "uploads");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                //Save the uploaded Excel file.
+                string fileName = Path.GetFileName(postedFile.FileName);
+                string filePath = Path.Combine(path, fileName);
+                using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }                
+
+                
+            }
+
+            return View();
         }
 
         private bool CompanyExists(int id)

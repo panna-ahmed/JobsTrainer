@@ -351,3 +351,4 @@ MigrationBackup/
 
 
 MLModel.zip
+/JobsTrainer/wwwroot/uploads/*
