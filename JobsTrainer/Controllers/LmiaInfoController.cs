@@ -9,85 +9,85 @@ using JobsTrainer.Models;
 
 namespace JobsTrainer.Controllers
 {
-    public class SkillsController : Controller
+    public class LmiaInfoController : Controller
     {
         private readonly TrainingContext _context;
 
-        public SkillsController(TrainingContext context)
+        public LmiaInfoController(TrainingContext context)
         {
             _context = context;
         }
 
-        // GET: Skills
+        // GET: LmiaInfo
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Skills.ToListAsync());
+            return View(await _context.LmiaInfos.ToListAsync());
         }
 
-        // GET: Skills/Details/5
+        // GET: LmiaInfo/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Skills == null)
+            if (id == null || _context.LmiaInfos == null)
             {
                 return NotFound();
             }
 
-            var skill = await _context.Skills
+            var lmiaInfo = await _context.LmiaInfos
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (skill == null)
+            if (lmiaInfo == null)
             {
                 return NotFound();
             }
 
-            return View(skill);
+            return View(lmiaInfo);
         }
 
-        // GET: Skills/Create
+        // GET: LmiaInfo/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Skills/Create
+        // POST: LmiaInfo/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CreatedAt")] Skill skill)
+        public async Task<IActionResult> Create([Bind("Id,ProvinceTerritory,ProgramStream,Employer,Address,Occupation,Approved")] LmiaInfo lmiaInfo)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(skill);
+                _context.Add(lmiaInfo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(skill);
+            return View(lmiaInfo);
         }
 
-        // GET: Skills/Edit/5
+        // GET: LmiaInfo/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Skills == null)
+            if (id == null || _context.LmiaInfos == null)
             {
                 return NotFound();
             }
 
-            var skill = await _context.Skills.FindAsync(id);
-            if (skill == null)
+            var lmiaInfo = await _context.LmiaInfos.FindAsync(id);
+            if (lmiaInfo == null)
             {
                 return NotFound();
             }
-            return View(skill);
+            return View(lmiaInfo);
         }
 
-        // POST: Skills/Edit/5
+        // POST: LmiaInfo/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CreatedAt")] Skill skill)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProvinceTerritory,ProgramStream,Employer,Address,Occupation,Approved")] LmiaInfo lmiaInfo)
         {
-            if (id != skill.Id)
+            if (id != lmiaInfo.Id)
             {
                 return NotFound();
             }
@@ -96,12 +96,12 @@ namespace JobsTrainer.Controllers
             {
                 try
                 {
-                    _context.Update(skill);
+                    _context.Update(lmiaInfo);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SkillExists(skill.Id))
+                    if (!LmiaInfoExists(lmiaInfo.Id))
                     {
                         return NotFound();
                     }
@@ -112,49 +112,49 @@ namespace JobsTrainer.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(skill);
+            return View(lmiaInfo);
         }
 
-        // GET: Skills/Delete/5
+        // GET: LmiaInfo/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Skills == null)
+            if (id == null || _context.LmiaInfos == null)
             {
                 return NotFound();
             }
 
-            var skill = await _context.Skills
+            var lmiaInfo = await _context.LmiaInfos
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (skill == null)
+            if (lmiaInfo == null)
             {
                 return NotFound();
             }
 
-            return View(skill);
+            return View(lmiaInfo);
         }
 
-        // POST: Skills/Delete/5
+        // POST: LmiaInfo/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Skills == null)
+            if (_context.LmiaInfos == null)
             {
-                return Problem("Entity set 'TrainingContext.Skill'  is null.");
+                return Problem("Entity set 'TrainingContext.LmiaInfos'  is null.");
             }
-            var skill = await _context.Skills.FindAsync(id);
-            if (skill != null)
+            var lmiaInfo = await _context.LmiaInfos.FindAsync(id);
+            if (lmiaInfo != null)
             {
-                _context.Skills.Remove(skill);
+                _context.LmiaInfos.Remove(lmiaInfo);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SkillExists(int id)
+        private bool LmiaInfoExists(int id)
         {
-            return _context.Skills.Any(e => e.Id == id);
+            return _context.LmiaInfos.Any(e => e.Id == id);
         }
     }
 }

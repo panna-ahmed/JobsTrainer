@@ -18,7 +18,7 @@ namespace JobsTrainer.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var skills = await _context.Skill.Select(c => c.Name).ToArrayAsync();
+            var skills = await _context.Skills.Select(c => c.Name).ToArrayAsync();
 
             return Ok(skills);
         }

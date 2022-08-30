@@ -4,6 +4,7 @@ using JobsTrainer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobsTrainer.Migrations
 {
     [DbContext(typeof(TrainingContext))]
-    partial class TrainingContextModelSnapshot : ModelSnapshot
+    [Migration("20220830034235_LmiaFix")]
+    partial class LmiaFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,37 +75,6 @@ namespace JobsTrainer.Migrations
                     b.ToTable("Keywords");
                 });
 
-            modelBuilder.Entity("JobsTrainer.Models.LmiaInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Approved")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Employer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Occupation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProgramStream")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProvinceTerritory")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LmiaInfos");
-                });
-
             modelBuilder.Entity("JobsTrainer.Models.Skill", b =>
                 {
                     b.Property<int>("Id")
@@ -125,7 +96,7 @@ namespace JobsTrainer.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Skills");
+                    b.ToTable("Skill");
                 });
 
             modelBuilder.Entity("JobsTrainer.Models.TrainJob", b =>

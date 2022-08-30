@@ -1,8 +1,11 @@
-﻿using JobsTrainer.Models;
+﻿using AutoMapper;
+using CsvHelper;
+using CsvHelper.Excel;
+using JobsTrainer.Infrastructure;
+using JobsTrainer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
-using System.Data.OleDb;
+
 namespace JobsTrainer.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -11,12 +14,14 @@ namespace JobsTrainer.Controllers
         private readonly TrainingContext _context;
         private readonly IWebHostEnvironment _environment;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public CompaniesController(TrainingContext context, IWebHostEnvironment environment, IConfiguration configuration)
+        public CompaniesController(TrainingContext context, IWebHostEnvironment environment, IConfiguration configuration, IMapper mapper)
         {
             _context = context;
             _environment = environment;
             _configuration = configuration;
+            _mapper = mapper;
         }
 
         // GET: Companies
@@ -154,8 +159,9 @@ namespace JobsTrainer.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(IFormFile postedFile)
+        public async Task<IActionResult> Index(IFormFile postedFile)
         {
+            var nocs = new List<string>() { "2173", "2174", "2147" };
             if (postedFile != null)
             {
                 //Create a Folder.
@@ -168,15 +174,55 @@ namespace JobsTrainer.Controllers
                 //Save the uploaded Excel file.
                 string fileName = Path.GetFileName(postedFile.FileName);
                 string filePath = Path.Combine(path, fileName);
-                using (FileStream stream = new FileStream(filePath, FileMode.Create))
-                {
-                    postedFile.CopyTo(stream);
-                }                
 
-                
+                var fileWithoutExt = Path.GetFileNameWithoutExtension(fileName);
+                var ext = Path.GetExtension(fileName);
+
+                if (ext == ".xlsx")
+                {
+                    int i = 1;
+                    while (System.IO.File.Exists(filePath))
+                    {
+                        filePath = Path.Combine(path, fileWithoutExt + '-' + i + ext);
+                        i++;
+                    }
+
+                    using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        postedFile.CopyTo(stream);
+                    }
+
+                    var lmias = new List<ExcelLmia>();
+                    using var reader = new CsvReader(new ExcelParser(filePath));
+                    reader.Read();
+                    while (reader.Read())
+                    {
+                        try
+                        {
+                            var record = reader.GetRecord<ExcelLmia>();
+
+                            foreach (var n in nocs)
+                            {
+                                if (record.Occupation.Contains(n))
+                                {
+                                    lmias.Add(record);
+                                    break;
+                                }
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+
+                    var mappedLmias = _mapper.Map<List<LmiaInfo>>(lmias);
+                    await _context.AddRangeAsync(mappedLmias);
+                    await _context.SaveChangesAsync();
+                }
             }
 
-            return View();
+            return View(await _context.Companies.ToListAsync());
         }
 
         private bool CompanyExists(int id)

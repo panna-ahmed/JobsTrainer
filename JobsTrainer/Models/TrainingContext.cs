@@ -14,6 +14,8 @@ namespace JobsTrainer.Models
 
         public DbSet<Keyword> Keywords { get; set; }
 
-        public DbSet<Skill> Skill { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+
+        public DbSet<LmiaInfo> LmiaInfos  { get; set; }
     }
 }

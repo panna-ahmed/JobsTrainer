@@ -1,16 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CsvHelper.Configuration.Attributes;
 
-namespace JobsTrainer.Models
+namespace JobsTrainer.Infrastructure
 {
-    public class LmiaInfo
+    public class ExcelLmia
     {
-        [Key]
-        public int Id { get; set; }
+        [Index(0)]
         public string ProvinceTerritory { get; set; }
+        [Index(1)]
         public string ProgramStream { get; set; }
+        [Index(2)]
         public string Employer { get; set; }
+        [Index(3)]
         public string Address { get; set; }
+        [Index(4)]
         public string Occupation { get; set; }
+        [Index(6)]
         public int Approved { get; set; }
     }
 }
