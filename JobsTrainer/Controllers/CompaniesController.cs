@@ -156,74 +156,7 @@ namespace JobsTrainer.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Index(IFormFile postedFile)
-        {
-            var nocs = new List<string>() { "2173", "2174", "2147" };
-            if (postedFile != null)
-            {
-                //Create a Folder.
-                string path = Path.Combine(this._environment.WebRootPath, "uploads");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
-                //Save the uploaded Excel file.
-                string fileName = Path.GetFileName(postedFile.FileName);
-                string filePath = Path.Combine(path, fileName);
-
-                var fileWithoutExt = Path.GetFileNameWithoutExtension(fileName);
-                var ext = Path.GetExtension(fileName);
-
-                if (ext == ".xlsx")
-                {
-                    int i = 1;
-                    while (System.IO.File.Exists(filePath))
-                    {
-                        filePath = Path.Combine(path, fileWithoutExt + '-' + i + ext);
-                        i++;
-                    }
-
-                    using (FileStream stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        postedFile.CopyTo(stream);
-                    }
-
-                    var lmias = new List<ExcelLmia>();
-                    using var reader = new CsvReader(new ExcelParser(filePath));
-                    reader.Read();
-                    while (reader.Read())
-                    {
-                        try
-                        {
-                            var record = reader.GetRecord<ExcelLmia>();
-
-                            foreach (var n in nocs)
-                            {
-                                if (record.Occupation.Contains(n))
-                                {
-                                    lmias.Add(record);
-                                    break;
-                                }
-                            }
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-
-                    var mappedLmias = _mapper.Map<List<LmiaInfo>>(lmias);
-                    await _context.AddRangeAsync(mappedLmias);
-                    await _context.SaveChangesAsync();
-                }
-            }
-
-            return View(await _context.Companies.ToListAsync());
-        }
+        }        
 
         private bool CompanyExists(int id)
         {
