@@ -96,7 +96,7 @@ namespace JobsTrainer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProvinceTerritory,ProgramStream,Employer,Address,Occupation,Approved")] LmiaInfo lmiaInfo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProvinceTerritory,ProgramStream,Employer,Address,Occupation,CompanyLink,Approved")] LmiaInfo lmiaInfo)
         {
             if (id != lmiaInfo.Id)
             {
