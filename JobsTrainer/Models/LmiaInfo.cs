@@ -12,5 +12,6 @@ namespace JobsTrainer.Models
         public string Address { get; set; }
         public string Occupation { get; set; }
         public int Approved { get; set; }
+        public string CompanyLink { get; set; }
     }
 }
