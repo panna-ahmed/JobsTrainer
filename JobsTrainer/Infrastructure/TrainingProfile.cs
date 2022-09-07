@@ -9,6 +9,7 @@ namespace JobsTrainer.Infrastructure
         public TrainingProfile()
         {
             CreateMap<TrainJob, TrainJobDto>().ReverseMap();
+            CreateMap<LmiaInfo, LmiaInfoDto>().ReverseMap();
 
             CreateMap<Company, CompanyDto>().ReverseMap();
 

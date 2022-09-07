@@ -10,6 +10,8 @@ using CsvHelper.Excel;
 using CsvHelper;
 using JobsTrainer.Infrastructure;
 using AutoMapper;
+using JobsTrainer.Core.DTOs;
+using Microsoft.Data.SqlClient;
 
 namespace JobsTrainer.Controllers
 {
@@ -81,14 +83,35 @@ namespace JobsTrainer.Controllers
             if (id == null || _context.LmiaInfos == null)
             {
                 return NotFound();
-            }
+            }            
 
             var lmiaInfo = await _context.LmiaInfos.FindAsync(id);
             if (lmiaInfo == null)
             {
                 return NotFound();
             }
-            return View(lmiaInfo);
+
+            var mappedLmia = _mapper.Map<LmiaInfoDto>(lmiaInfo);
+
+            var li = _context.LmiaInfos.OrderByDescending(l => l.Approved).AsQueryable();
+
+            int[] lmialist = await li.Select(j => j.Id).ToArrayAsync();
+
+            int index = Array.IndexOf(lmialist, id);
+
+            int? prev = null;
+            int? next = null;
+
+            if (index >= 0)
+            {
+                if (index > 0) prev = lmialist[index - 1];
+                if (index < lmialist.Count() - 1) next = lmialist[index + 1];
+            }
+
+            mappedLmia.PrevLmiaId = prev;
+            mappedLmia.NextLmiaId = next;
+
+            return View(mappedLmia);
         }
 
         // POST: LmiaInfo/Edit/5
@@ -102,6 +125,7 @@ namespace JobsTrainer.Controllers
             {
                 return NotFound();
             }
+
 
             if (ModelState.IsValid)
             {
@@ -121,7 +145,7 @@ namespace JobsTrainer.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit), id);
             }
             return View(lmiaInfo);
         }
