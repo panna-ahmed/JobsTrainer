@@ -58,7 +58,7 @@
                 @Html.DisplayFor(modelItem => item.Occupation)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CompanyLink)
+                <a href="@item.CompanyLink">@item.CompanyLink</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Approved)
