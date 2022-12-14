@@ -49,7 +49,14 @@
                 @Html.DisplayFor(modelItem => item.ProgramStream)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Employer)
+                @if(!string.IsNullOrEmpty(item.CompanyLink))
+                {
+                    @Html.DisplayFor(modelItem => item.Employer)
+                }
+                else
+                {
+                    <a target="_blank" href=@string.Format("https://www.google.com/search?q={0}",item.Employer.Replace(' ', '+'))>@item.Employer</a>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
@@ -58,7 +65,7 @@
                 @Html.DisplayFor(modelItem => item.Occupation)
             </td>
             <td>
-                <a href="@item.CompanyLink">@item.CompanyLink</a>
+                <a target="_blank" href="@item.CompanyLink">@item.CompanyLink</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Approved)
