@@ -3,13 +3,7 @@ using JobsTrainer.Core.DTOs;
 using JobsTrainer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static System.Net.Mime.MediaTypeNames;
-
-using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
 
 
 namespace JobsTrainer.Controllers

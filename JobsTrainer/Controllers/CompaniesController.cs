@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using CsvHelper;
-using CsvHelper.Excel;
-using JobsTrainer.Infrastructure;
 using JobsTrainer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

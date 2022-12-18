@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using JobsTrainer.Models;
-using CsvHelper.Excel;
+﻿using AutoMapper;
 using CsvHelper;
-using JobsTrainer.Infrastructure;
-using AutoMapper;
+using CsvHelper.Excel;
 using JobsTrainer.Core.DTOs;
-using Microsoft.Data.SqlClient;
+using JobsTrainer.Infrastructure;
+using JobsTrainer.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobsTrainer.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class LmiaInfoController : Controller
     {       
 
@@ -149,6 +144,7 @@ namespace JobsTrainer.Controllers
             }
             return View(lmiaInfo);
         }
+        
 
         // GET: LmiaInfo/Delete/5
         public async Task<IActionResult> Delete(int? id)

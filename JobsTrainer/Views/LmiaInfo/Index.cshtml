@@ -55,7 +55,7 @@
                 }
                 else
                 {
-                    <a target="_blank" href=@string.Format("https://www.google.com/search?q={0}",item.Employer.Replace(' ', '+'))>@item.Employer</a>
+                    <a target="_blank" href=@string.Format("https://www.google.com/search?q={0}&lmiaEmployerId={1}",item.Employer.Replace(' ', '+'), item.Id)>@item.Employer</a>
                 }
             </td>
             <td>
