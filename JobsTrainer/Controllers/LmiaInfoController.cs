@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CsvHelper;
 using CsvHelper.Excel;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using JobsTrainer.Core.DTOs;
 using JobsTrainer.Infrastructure;
 using JobsTrainer.Models;
@@ -191,7 +192,7 @@ namespace JobsTrainer.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(IFormFile postedFile)
         {
-            var nocs = new List<string>() { "2173", "2174", "2147" };
+            var nocs = new List<string>() { "2173", "2174", "2175", "2147" };
             if (postedFile != null)
             {
                 //Create a Folder.
@@ -230,13 +231,30 @@ namespace JobsTrainer.Controllers
                         try
                         {
                             var record = reader.GetRecord<ExcelLmia>();
+                            var lmiaInfo = await _context.LmiaInfos.FirstOrDefaultAsync(m => m.Employer == record.Employer);
 
-                            foreach (var n in nocs)
+                            if (lmiaInfo == null)
                             {
-                                if (record.Occupation.Contains(n))
+                                foreach (var n in nocs)
                                 {
-                                    lmias.Add(record);
-                                    break;
+                                    if (record.Occupation.Contains(n))
+                                    {
+                                        lmias.Add(record);
+                                        break;
+                                    }
+                                }
+                            }
+                            else if(lmiaInfo.Approved != record.Approved)
+                            {
+                                lmiaInfo.Approved += record.Approved;
+
+                                try
+                                {
+                                    _context.Update(lmiaInfo);
+                                    await _context.SaveChangesAsync();
+                                }
+                                catch
+                                {                                    
                                 }
                             }
                         }
@@ -252,7 +270,7 @@ namespace JobsTrainer.Controllers
                 }
             }
 
-            return View(await _context.Companies.ToListAsync());
+            return View(await _context.LmiaInfos.OrderByDescending(l => l.Approved).ToListAsync());
         }
     }
 }
